@@ -67,14 +67,30 @@ const gameFlow = (() => {
     // Define the cells variable
     const cells = document.querySelectorAll('.cell');
     const resetButton = document.querySelector('#reset-button');
+    
+    let gameActive = true;
+
+    // Function to stop the game and display result
+    const endGame = (result) => {
+        console.log(result);
+        // Add any additional logic or UI updates you may need
+        gameActive = false; // Set gameActive to false to prevent further clicks
+    };
+
+
     resetButton.addEventListener('click', () => {
         gameboard.resetBoard();
-    
+        gameActive = true;
         console.log("Board has been reset.");
     });
     // Add event listener to each cell
     cells.forEach(cell => {
         cell.addEventListener('click', () => {
+            if (!gameActive) {
+                console.log("Game has ended. Click the reset button to play again.");
+                return;
+            }
+
             // Get the clicked cell
             const clickedCell = cell;
             console.log(clickedCell);
@@ -87,9 +103,9 @@ const gameFlow = (() => {
             // Check if a player has won
             const winner = gameboard.checkWinner();
             if (winner) {
-                console.log(`Player ${winner} has won!`);
+                endGame(`Player ${winner} has won!`);
             } else if (gameboard.board.every(cell => cell !== "")) {
-                console.log("It's a tie!");
+                endGame("It's a tie!");
             }
         });
     });
