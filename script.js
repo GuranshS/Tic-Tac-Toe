@@ -1,5 +1,4 @@
 
-
 const gameboard = (() => {
     let board = ["", "", "",
                  "", "", "",
@@ -25,6 +24,8 @@ const gameboard = (() => {
             cells.forEach(cell => {
                 cell.textContent = "";
             });
+            const resultDiv = document.querySelector('.result');
+            resultDiv.textContent = "";
         };
 
     const checkWinner = () => {
@@ -67,13 +68,12 @@ const gameFlow = (() => {
     // Define the cells variable
     const cells = document.querySelectorAll('.cell');
     const resetButton = document.querySelector('#reset-button');
-    
+    const resultDiv = document.querySelector('.result');
     let gameActive = true;
 
     // Function to stop the game and display result
     const endGame = (result) => {
-        console.log(result);
-        // Add any additional logic or UI updates you may need
+        resultDiv.textContent = result;
         gameActive = false; // Set gameActive to false to prevent further clicks
     };
 
@@ -83,7 +83,7 @@ const gameFlow = (() => {
         gameActive = true;
         console.log("Board has been reset.");
     });
-    // Add event listener to each cell
+
     cells.forEach(cell => {
         cell.addEventListener('click', () => {
             if (!gameActive) {
@@ -103,7 +103,7 @@ const gameFlow = (() => {
             // Check if a player has won
             const winner = gameboard.checkWinner();
             if (winner) {
-                endGame(`Player ${winner} has won!`);
+                endGame(`${winner} has won!`);
             } else if (gameboard.board.every(cell => cell !== "")) {
                 endGame("It's a tie!");
             }
